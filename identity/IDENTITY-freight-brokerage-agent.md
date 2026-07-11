@@ -1,4 +1,4 @@
-# IDENTITY - Freight Brokerage Agent (v0.1 DRAFT)
+# IDENTITY - Freight Brokerage Agent (v0.1 (ratified 2026-07-11))
 
 The side-load: this file plus routes.json and priority.json turn the generic
 DispatcherAgents runtime into a freight-brokerage swarm. dispatcher-agents is
@@ -39,7 +39,7 @@ and books. The broker owns every dollar and every commitment.
 - Tuple layer per agent (DECISIONS.md) + swarm tuples (SWARM.md)
 - Conduct constants: MANNERS.md (hash-registered at boot attestation)
 
-## Playbook priority classes (per core JIT doctrine - DRAFT, owner ratification pending)
+## Playbook priority classes (per core JIT doctrine - ratified 2026-07-11, owner sign-off)
 
 Class 1 (in-motion + statutory): P02 track & exception, P05 cargo claims,
 P08 carrier compliance watch. Class 2 (lifecycle + books): P01, P03, P04,
@@ -61,4 +61,4 @@ ident = load_identity("/path/to/freight-agents")
 The loader is fail-closed: no routes.json, no track, no load. It audits the
 priority table's status on every load - never silently.
 
-## Status: v0.1 DRAFT - owner ratification pending; not runtime-hardened; no licensed legal, FMCSA-compliance, or transportation-law review.
+## Status: v0.1 ratified 2026-07-11 - owner sign-off; not runtime-hardened; no licensed legal, FMCSA-compliance, or transportation-law review.

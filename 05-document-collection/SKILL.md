@@ -8,7 +8,7 @@ description: "Document collection. Use when rate cons, BOLs, PODs, and receipts 
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Evidence pipeline (freight paperwork)
 **Autonomy tier:** Autonomous request, receipt, and inventory of freight documents; a document is what it says - alterations and 'clean-up' never happen, and rate-con signatures are verified against the authority record
-**Version:** 0.1 (DRAFT - not implemented)
+**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
 
 ---
 

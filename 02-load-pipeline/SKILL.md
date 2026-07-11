@@ -8,7 +8,7 @@ description: "Load pipeline. Use when loads need lifecycle orchestration from te
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Coordination (load lifecycle)
 **Autonomy tier:** Autonomous load lifecycle orchestration per ratified rules; carrier selection proposals route through vetting, and every rate confirmation is a signed human act
-**Version:** 0.1 (DRAFT - not implemented)
+**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
 
 ---
 

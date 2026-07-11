@@ -8,7 +8,7 @@ description: "Accessorials and detention. Use when facility timestamps need rule
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Financial records (accessorials)
 **Autonomy tier:** Autonomous detention and accessorial RECORDS per contract rules and captured timestamps; anything outside a loaded rule is a named fact for the human, never an improvised charge
-**Version:** 0.1 (DRAFT - not implemented)
+**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
 
 ---
 

@@ -8,7 +8,7 @@ description: "Carrier vetting. Use when carriers need authority, insurance, safe
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Systems lookup (carrier compliance facts)
 **Autonomy tier:** Autonomous authority/insurance/safety FACT checks against FMCSA and insurance sources; new-carrier approval and any exception to the vetting criteria are human decisions
-**Version:** 0.1 (DRAFT - not implemented)
+**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
 
 ---
 

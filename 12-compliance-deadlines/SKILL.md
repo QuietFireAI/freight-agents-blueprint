@@ -8,7 +8,7 @@ description: "Compliance and deadlines. Use when carrier insurance/authority exp
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Regulatory engine (freight clocks)
 **Autonomy tier:** Autonomous clock tracking and alerting; regulatory interpretation and any external filing are human - clocks are facts, conservatism ratified
-**Version:** 0.1 (DRAFT - not implemented)
+**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
 
 ---
 

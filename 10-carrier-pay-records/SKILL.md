@@ -8,7 +8,7 @@ description: "Carrier pay records. Use when settlements need building from signe
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Financial records (carrier settlements)
 **Autonomy tier:** Autonomous settlement records per signed rate-con terms and rule-cited accessorials, gated on the POD artifact; quick-pay and any exception execute only on signed human `pay.authority`
-**Version:** 0.1 (DRAFT - not implemented)
+**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
 
 ---
 

@@ -8,7 +8,7 @@ description: "Load intake. Use when shipper tenders need complete, source-attrib
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Intake (shipper loads)
 **Autonomy tier:** Autonomous load capture and completeness checks; NEVER a rate quote or capacity promise - pricing and commitments are the broker's, on signed authority downstream
-**Version:** 0.1 (DRAFT - not implemented)
+**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
 
 ---
 
