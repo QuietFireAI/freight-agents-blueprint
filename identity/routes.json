@@ -3,6 +3,15 @@
  "vertical": "freight-brokerage-agent",
  "routes": [
   {
+   "intent": "load.signal",
+   "senders": [
+    "20"
+   ],
+   "receivers": [
+    "01"
+   ]
+  },
+  {
    "intent": "load.captured",
    "senders": [
     "01"
