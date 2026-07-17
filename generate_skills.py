@@ -12,6 +12,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 # tokens: 'NN' agent ids, 'human', 'external', 'queue', 'any'
 ROUTES = [
  ("load.captured", ["01"], ["02"], "", ""),
+ ("load.signal", ["external"], ["01"], "", "EDI/email/portal/phone-transcript tender systems"),
  ("carrier.vet.request", ["02", "06"], ["03"], "", ""),
  ("carrier.vet.result", ["03"], ["02", "06", "13"], "", ""),
  ("load.assign", ["02"], ["06"], "", ""),
@@ -301,6 +302,7 @@ tendered; it never quotes, never promises capacity.""",
    "Inferring commodity or weight from lane history - tendered facts only.",
   ],
   edges=[
+   ["IN", "← external (EDI/email/portal/phone-transcript tender systems)", "Shipper load tender", "`load.signal`"],
    ["OUT", "→ 02 Load Pipeline", "Complete load tenders", "`load.captured`"],
    ["OUT", "→ 13 Freight Records", "Record lookups", "`record.request`"],
    ["IN", "← 13 Freight Records", "Record responses", "`record.response`"],
