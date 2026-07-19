@@ -92,7 +92,6 @@ communication in that one guarantee.
 | Intent | From | To |
 |---|---|---|
 | `load.captured` | 01 | 02 |
-| `load.signal` | external | EDI/email/portal/phone-transcript tender systems |
 | `carrier.vet.request` | 02, 06 | 03 |
 | `carrier.vet.result` | 03 | 02, 06, 13 |
 | `load.assign` | 02 | 06 |
