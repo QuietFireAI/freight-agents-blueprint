@@ -7,7 +7,7 @@ description: "Swarm deployment: external records request (shipper audit, insurer
 
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Deployment playbook (consumed by Agent 00 - Dispatcher)
-**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
+**Version:** 0.2 (ratified 2026-07-18; extended & ratified 2026-07-18 - owner sign-off)
 
 ## Trigger
 External records request lands via 04 (shipper/carrier channel) or direct to the desk (human forwards via `config.update` note or record.request).

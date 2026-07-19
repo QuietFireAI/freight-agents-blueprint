@@ -8,7 +8,7 @@ description: "Shipper invoicing. Use when invoices need contract-cited assembly 
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Financial records (shipper invoices)
 **Autonomy tier:** Autonomous invoice records from contracted rates and rule-cited accessorials with paperwork attached; adjustments and write-downs execute only on signed human `adjust.authority`
-**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
+**Version:** 0.2 (ratified 2026-07-18; extended & ratified 2026-07-18 - owner sign-off)
 
 ---
 

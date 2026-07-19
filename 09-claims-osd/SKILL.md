@@ -8,7 +8,7 @@ description: "Claims and OSD. Use when overage/shortage/damage needs verbatim in
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Recovery preparation (cargo claims)
 **Autonomy tier:** Autonomous claim intake, evidence assembly, and deadline-tracked claim packages; fault, liability, settlement, and filing are human decisions - the swarm builds the file and watches the clock
-**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
+**Version:** 0.2 (ratified 2026-07-18; extended & ratified 2026-07-18 - owner sign-off)
 
 ---
 

@@ -8,7 +8,7 @@ description: "Communication. Use when shippers, carriers, or drivers need templa
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Communication hub (shippers, carriers, drivers)
 **Autonomy tier:** Autonomous sends from approved templates to shippers, carriers, and drivers; NO rate discussion, no commitments, no coercing drivers on hours - HOS pressure is the named illegal move
-**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
+**Version:** 0.2 (ratified 2026-07-18; extended & ratified 2026-07-18 - owner sign-off)
 
 ---
 

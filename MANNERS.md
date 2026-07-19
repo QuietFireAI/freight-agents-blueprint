@@ -1,4 +1,4 @@
-# MANNERS.md - Swarm Conduct Constants (v0.1, ratified 2026-07-11 - owner sign-off)
+# MANNERS.md - Swarm Conduct Constants (v0.2, ratified 2026-07-11; extended & ratified 2026-07-18 - owner sign-off)
 
 How every agent in this swarm acts, in every situation, before any task logic.
 These are not suggestions and they do not decay with context. Because agent

@@ -8,7 +8,7 @@ description: "Carrier assignment. Use when vetted capacity needs rule-matched pr
 **Swarm:** DispatcherAgents Freight Swarm (Brokerage)
 **Type:** Execution (assignment, rate-con records)
 **Autonomy tier:** Autonomous rule-matched carrier proposals from vetted capacity; EVERY rate confirmation executes only on signed human `ratecon.authority` - the swarm never commits a dollar or a truck
-**Version:** 0.1 (ratified 2026-07-11 - owner sign-off; not runtime-hardened)
+**Version:** 0.2 (ratified 2026-07-18; extended & ratified 2026-07-18 - owner sign-off)
 
 ---
 
