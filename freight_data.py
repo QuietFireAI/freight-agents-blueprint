@@ -1,5 +1,6 @@
 # freight-agents data: ROUTES + AGENTS.
 ROUTES = [
+ ("load.signal", ["external"], ["01"], "", ""),
  ("load.captured", ["01"], ["02"], "", ""),
  ("carrier.vet.request", ["02", "06"], ["03"], "", ""),
  ("carrier.vet.result", ["03"], ["02", "06", "13"], "", ""),
@@ -54,6 +55,7 @@ tendered; it never quotes, never promises capacity.""",
    "Inferring commodity or weight from lane history - tendered facts only.",
   ],
   edges=[
+   ['IN', '← external', 'Tender/availability signals (EDI, email, portal, phone transcript)', '`load.signal`'],
    ["OUT", "→ 02 Load Pipeline", "Complete load tenders", "`load.captured`"],
    ["OUT", "→ 13 Freight Records", "Record lookups", "`record.request`"],
    ["IN", "← 13 Freight Records", "Record responses", "`record.response`"],

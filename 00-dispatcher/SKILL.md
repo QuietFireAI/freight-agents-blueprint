@@ -91,6 +91,7 @@ communication in that one guarantee.
 
 | Intent | From | To |
 |---|---|---|
+| `load.signal` | external | 01 |
 | `load.captured` | 01 | 02 |
 | `carrier.vet.request` | 02, 06 | 03 |
 | `carrier.vet.result` | 03 | 02, 06, 13 |
