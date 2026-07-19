@@ -174,4 +174,88 @@ PB = [
          "Open exceptions lead both books until resolved."],
   completion="EOD books delivered; sweep complete with owners named; completion event logged.",
   abort=["Morning baseline absent: the sweep names that first and proceeds on records alone."]),
+
+ dict(num="P11", slug="carrier-status-change", name="Carrier Status Change Mid-Cycle",
+  desc="Swarm deployment: mid-cycle carrier standing change (insurance lapse, authority revocation, safety-rating drop) to human-directed disposition on every affected load. Agents 03, 02, 06, 12, 13. A lapsed carrier under a rolling load is the same-turn nightmare this playbook exists for.",
+  trigger="`carrier.status.change` at 02/06/12/13 from 03 (monitoring feed, FMCSA data, insurance certificate lapse).",
+  pre=["The prior standing facts are on record with timestamps - a change is only a change against a recorded baseline."],
+  phases=[
+   ("Phase 1 - Blast radius (same turn)", [
+    ("1","03","Report the change with source, effective date, both fact sets","`carrier.status.change` \u2192 02, 06, 12, 13","standing facts on record"),
+    ("2","13","Return every load touching this carrier: covered, rolling, delivered-unpaid","`record.response` \u2192 02, 06","affected-load list with states"),
+    ("3","02","Rolling/covered loads escalate to human with the standing facts","`escalation.carrier_standing` \u2192 queue","human alerted inside the turn"),
+   ]),
+   ("Phase 2 - Disposition", [
+    ("4","06","New tenders to this carrier hold; signed ratecons route to human - never auto-cancelled","(hold; `clarification.request` as needed)","every assignment has a human disposition or a hold"),
+    ("5","12","Compliance clocks re-derived; conservatism rule","`deadline.alert` \u2192 03, 09, 11, 14 (as needed)","earlier date governs, on record"),
+   ]),
+  ],
+  gates=["No load moves or continues under a carrier the human has not dispositioned after a disqualifying change - and no signed ratecon is cancelled by the swarm.",
+         "The change is reported as fact with its source - the swarm never argues standing with a carrier."],
+  completion="Every affected load dispositioned by the human or held with reason named; clocks re-derived; the change and its blast radius on record.",
+  abort=["Monitoring source conflicts with carrier documents: both reported with timestamps; human resolves - the discrepancy is the fact.",
+         "Change lands on a load mid-delivery: human immediately with the rolling-load state - in-motion decisions are human, always."]),
+
+ dict(num="P12", slug="incident-handoff", name="Carrier Incident Handoff",
+  desc="Swarm deployment: incident reported anywhere (accident, breakdown, injury, hazmat) to verbatim human handoff with claims and clocks armed. Agents 04/07 (detection), 09, 12, 13, 14. No scripting, no fault language, no liability statements - the handoff carries the words.",
+  trigger="`carrier.incident.notice` from carrier/driver channel (04) or tracking (07).",
+  pre=["The report is captured verbatim with source, timestamp, load and carrier reference - the handoff carries the reporter's words, not a summary."],
+  phases=[
+   ("Phase 1 - Handoff (same turn)", [
+    ("1","04/07","Route verbatim; no reply beyond receipt acknowledgment","`carrier.incident.notice` \u2192 human, 09, 12, 13, 14","verbatim record delivered, human alerted"),
+    ("2","14","Ops visibility same turn; on-scene response is human territory","(ops log)","daily book carries the incident"),
+   ]),
+   ("Phase 2 - Arm", [
+    ("3","09","Claims posture arms: preservation flags, evidence custody named","`claim.intake` (if cargo affected) \u2192 09","arming recorded - arming is not accusing"),
+    ("4","12","Regulatory clocks armed where applicable (DOT, hazmat release, injury reporting)","`deadline.alert` \u2192 09, 14 (at lead-times)","clocks live with citations; humans make filings"),
+    ("5","13","Incident spine on the record - verbatim, custody-flagged","`interaction.log`","record complete"),
+   ]),
+  ],
+  gates=["No fault, liability, or safety statement from any agent to anyone - carrier, driver, shipper, or consignee (the swarm's only move is the verbatim handoff).",
+         "Regulatory filings are human acts - the swarm arms clocks and assembles facts, it never files."],
+  completion="Verbatim handoff same turn, ops visible, claims and clocks armed, record complete; humans own everything after.",
+  abort=["Ambiguity about whether a report is an incident: treat it as one - the conservative read is the only read.",
+         "Shipper or consignee asks about the incident: facts of shipment status only, from posted records; incident questions route to human."]),
+
+ dict(num="P13", slug="load-change-wave", name="Load Change Wave",
+  desc="Swarm deployment: shipper changes a tendered or covered load to re-anchored assignment, tracking, billing, and clocks. Agents 01/02, 06, 07, 11, 12, 13. A changed tender is a new fact set - never an edit in place, never a silent amendment to a signed ratecon.",
+  trigger="`load.change.notice` from intake (01) or pipeline (02): window, consignee, weight, commodity, or equipment changed.",
+  pre=["Both versions of the load are on record with timestamps - the delta is enumerable, not vibes."],
+  phases=[
+   ("Phase 1 - Blast radius", [
+    ("1","01/02","Change with both versions and the enumerated delta","`load.change.notice` \u2192 06, 07, 11, 12, 13","delta on record"),
+    ("2","06","Signed-ratecon impact: delta routes to human - re-negotiation, never silent amendment","`clarification.request` \u2192 human (if ratecon signed)","human owns changed terms against signatures"),
+   ]),
+   ("Phase 2 - Re-anchor", [
+    ("3","07","Tracking and appointment expectations re-anchored; both windows on record","`track.status` \u2192 02, 08, 13","expectations match the new facts"),
+    ("4","11","Billing holds until changed terms confirmed on record","(hold)","no invoice against superseded terms"),
+    ("5","12","Appointment/filing clocks re-anchored; conservatism rule","`deadline.alert` (as needed)","earlier date governs"),
+   ]),
+  ],
+  gates=["A signed ratecon is never amended by the swarm - changed terms against a signature are a human re-negotiation.",
+         "No invoice issues against superseded terms - billing waits for the confirmed record."],
+  completion="Every affected lane re-anchored to the new facts or held with reason; signed-paper questions with the human; both versions on record.",
+  abort=["Change arrives mid-delivery: human immediately with the rolling state.",
+         "Shipper and carrier state different versions of the change: both recorded verbatim; the discrepancy routes to human."]),
+
+ dict(num="P14", slug="records-request-response", name="Records Request Response",
+  desc="Swarm deployment: external records request (shipper audit, insurer, subpoena) to human-approved disclosure inside the response clock. Agents 13, 12, 05, 04. The swarm inventories existence; a human approves every release - legal process is counsel's lane.",
+  trigger="External records request lands via 04 (shipper/carrier channel) or direct to the desk (human forwards via `config.update` note or record.request).",
+  pre=["The request is captured verbatim with date, requester, scope, and stated deadline (or the regulatory/contractual default)."],
+  phases=[
+   ("Phase 1 - Clock and inventory", [
+    ("1","12","Arm the response clock (default if none stated)","`deadline.alert` \u2192 14 (at lead-times)","clock live"),
+    ("2","13","Disclosure inventory: existence, type, date, source per item","`records.disclosure.package` \u2192 human, 12","inventory delivered inside lead-time"),
+    ("3","05","Flag items under litigation/claim custody or third-party confidentiality","`doc.received` \u2192 13 (flag references)","flag status per item - flagged, not judged"),
+   ]),
+   ("Phase 2 - Human release", [
+    ("4","13","Record the human's release decision and what was disclosed","`record.response` + `interaction.log`","itemized disclosure record: who, what, when, under whose approval"),
+    ("5","04","Transmit per the approved scope","`message.send` \u2192 external","transmission artifact on record"),
+   ]),
+  ],
+  gates=["Nothing beyond the human's itemized approval transmits - the approval is the ceiling.",
+         "Subpoenas and legal process are counsel's lane - the swarm inventories and waits for direction, it never responds to legal process itself."],
+  completion="Human-approved disclosure transmitted inside the clock with a complete itemized record; or refusal/clarification recorded the same way.",
+  abort=["Scope ambiguous or overbroad: clarification before any work product leaves the swarm.",
+         "Request touches an open cargo claim: 09's custody flags govern - claim-relevant items route with the claim posture named."]),
 ]

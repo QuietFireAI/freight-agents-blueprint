@@ -18,6 +18,8 @@ Connected playbooks: all (transport/queues)
 | 00.03 | duplicate envelope_id arrives | re-ack the original outcome; never process twice |
 | 00.04 | compliance.hold received mid-run | suspend the named load's traffic; only 12's release or human direction resumes it |
 | 00.05 | a spoke reports done without its artifact | treat as not-done; the artifact is the proof |
+| 00.06 | authority intent arrives with no registered signer for that lane | reject fail-closed + integrity.violation; an unregistered authority lane does not exist |
+| 00.07 | an agent's wait on another passes its timeout | agent.status to 14; waits are visible by rule, never discovered by surprise |
 
 ## Agent 01 - load-intake
 Connected playbooks: none (tuple-layer only)
@@ -28,9 +30,10 @@ Connected playbooks: none (tuple-layer only)
 | 01.02 | appointment window ambiguous ('morning') | record verbatim, confirm via the comms lane; a guessed window is a detention dispute later |
 | 01.03 | commodity outside configured scope | hold and escalate; scope is config, not a judgment call |
 | 01.04 | tender arrives referencing a rate 'as agreed' | capture the reference verbatim; the rate exists only where a signed record says so |
+| 01.05 | shipper changes a tendered load (window, consignee, weight, commodity) | load.change.notice with both versions and timestamps; a changed tender is a new fact set, never an edit in place |
 
 ## Agent 02 - load-pipeline
-Connected playbooks: P01, P02
+Connected playbooks: P01, P02, P11
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -38,9 +41,11 @@ Connected playbooks: P01, P02
 | 02.02 | tracking goes dark inside a delivery window | exception immediately with last-known facts; silence is an exception, not an assumption |
 | 02.03 | shipper requests re-consignment mid-transit | route to human; a destination change is a contract change |
 | 02.04 | POD absent past the chase cadence | the load stays undelivered on the record; escalate - paper is the proof |
+| 02.05 | carrier.status.change lands on a covered or rolling load | blast radius named to 06, 07, 12; the assignment question routes to human with the standing facts - a lapsed carrier under a load is a same-turn escalation |
+| 02.06 | load change arrives mid-cycle | affected lanes (assignment, tracking, billing, clocks) re-anchored to the new facts; posted history never rewritten |
 
 ## Agent 03 - carrier-vetting
-Connected playbooks: P01, P08
+Connected playbooks: P01, P08, P11
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -48,9 +53,11 @@ Connected playbooks: P01, P08
 | 03.02 | insurance cert names a different entity than the MC | both facts to human; the named double-brokering signal |
 | 03.03 | carrier passes criteria but is on the do-not-use list | the list governs; assignment stays blocked, conflict to human |
 | 03.04 | safety rating changes on an assigned carrier | immediate fact to human with the load state; mid-load compliance changes are human calls |
+| 03.05 | monitoring shows insurance lapse, authority revocation, or safety-rating drop on an active carrier | carrier.status.change same turn to 02, 06, 12, 13 with the source and effective date; standing changes are facts on clocks, not opinions |
+| 03.06 | standing change source conflicts with carrier's own documents | both reported with timestamps; the discrepancy is the fact - vetting never argues, it reports |
 
 ## Agent 04 - communication
-Connected playbooks: P01, P02, P03, P04, P06, P07, P08
+Connected playbooks: P01, P02, P03, P04, P06, P07, P08, P14
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -58,9 +65,10 @@ Connected playbooks: P01, P02, P03, P04, P06, P07, P08
 | 04.02 | carrier asks for more money mid-transit | route verbatim; renegotiation-in-motion is the broker's, on signed authority |
 | 04.03 | shipper asks who the carrier is | answer per the configured disclosure rule; disclosure is config |
 | 04.04 | a reply contains claim admissions language | route to 09 and human verbatim; the comms lane never confirms fault |
+| 04.05 | accident, breakdown, injury, or hazmat language appears in any carrier or driver message | carrier.incident.notice verbatim same turn to human, 09, 12, 13, 14; no scripting, no fault language, no coaching - the handoff carries the words |
 
 ## Agent 05 - document-collection
-Connected playbooks: P03, P05
+Connected playbooks: P03, P05, P14
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -70,7 +78,7 @@ Connected playbooks: P03, P05
 | 05.04 | a document's figures look altered | the anomaly is a FACT to human; the swarm never declares fraud |
 
 ## Agent 06 - carrier-assignment
-Connected playbooks: P01
+Connected playbooks: P01, P11, P13
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -78,9 +86,11 @@ Connected playbooks: P01
 | 06.02 | carrier accepts then demands a higher rate pre-pickup | the renege is a fact to human; the record holds the signed terms |
 | 06.03 | duplicate authority envelope | execute once; envelope_id idempotency |
 | 06.04 | vet result is older than the staleness rule at execution | re-vet before the record executes; assignment on a stale vet is the named failure |
+| 06.05 | carrier.status.change received for the assigned carrier | assignment posture re-checked; any new tender to that carrier holds pending human direction - the ratecon already signed is a human question, not an auto-cancel |
+| 06.06 | load.change.notice affects a signed ratecon | the delta routes to human; changed terms against a signed ratecon are a re-negotiation, never a silent amendment |
 
 ## Agent 07 - track-trace
-Connected playbooks: P02
+Connected playbooks: P02, P13
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -88,6 +98,8 @@ Connected playbooks: P02
 | 07.02 | facility disputes the recorded arrival time | both timestamps stand; detention runs conservative until the human resolves |
 | 07.03 | tracking dark past threshold on a high-value load | exception immediately, escalation class raised; value raises urgency, never assumptions |
 | 07.04 | driver reports a breakdown | facts to 02 and human immediately; recovery decisions are the broker's |
+| 07.05 | incident language surfaces in tracking updates | carrier.incident.notice verbatim same turn; tracking continues as facts - the incident lane and the tracking lane both run |
+| 07.06 | load.change.notice changes appointment expectations | tracking re-anchored; the old and new windows both on record - a moved appointment is a fact with a timestamp |
 
 ## Agent 08 - accessorials-detention
 Connected playbooks: P04
@@ -100,7 +112,7 @@ Connected playbooks: P04
 | 08.04 | detention accrues past the configured escalation threshold | human alert with both clocks; accrual never runs silent |
 
 ## Agent 09 - claims-osd
-Connected playbooks: P05
+Connected playbooks: P05, P12
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -108,6 +120,8 @@ Connected playbooks: P05
 | 09.02 | carrier disputes the OSD facts | both versions verbatim in the package; the package argues nothing |
 | 09.03 | claim clock lead-time arrives with evidence outstanding | package ships with gaps NAMED inside the clock |
 | 09.04 | shipper deducts a claim from payment unilaterally | record the deduction exactly and route; offset is a legal question |
+| 09.05 | signed claim.disposition received | recorded verbatim; the claim closes per the direction - paid, denied, subrogated, or withdrawn - a claim's ending is signed or it has not ended |
+| 09.06 | carrier.incident.notice arrives | claims posture arms: preservation flags set, evidence custody named; no liability statement to anyone - arming is not accusing |
 
 ## Agent 10 - carrier-pay-records
 Connected playbooks: P06
@@ -118,9 +132,10 @@ Connected playbooks: P06
 | 10.02 | factoring NOA arrives mid-load | pay redirection is a human-confirmed change; changed-payee freeze mirrors the wire-fraud rule |
 | 10.03 | POD present but unsigned | the gate stays closed with the defect named; defective is not received |
 | 10.04 | signed pay authority references a settled load | hold and re-confirm; a second payment on a settled load is the duplicate-pay line |
+| 10.05 | carrier-pay books do not reconcile to the penny | reconciliation.exception to human and 13 - $0.00 tolerance (ratified 2026-07-18); 'close enough' is the named breach |
 
 ## Agent 11 - shipper-invoicing
-Connected playbooks: P07
+Connected playbooks: P07, P13
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -128,9 +143,11 @@ Connected playbooks: P07
 | 11.02 | shipper short-pays citing a dispute | record the payment exactly and route the delta; the invoice never quietly shrinks |
 | 11.03 | detention rule-valid but contract waives it for this facility | the waiver governs; contract specificity beats the general rule |
 | 11.04 | required paperwork list differs from what the shipper now demands | the contract's list governs; the new demand is a fact for the human |
+| 11.05 | invoice books do not reconcile to the penny | reconciliation.exception to human and 13 - $0.00 tolerance (ratified 2026-07-18); the shipper's trust is the penny |
+| 11.06 | load.change.notice alters billable terms | billing holds until the changed terms are confirmed on record; an invoice against superseded terms is the named error |
 
 ## Agent 12 - compliance-deadlines
-Connected playbooks: P05, P07, P08
+Connected playbooks: P05, P07, P08, P11, P12, P13, P14
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -138,9 +155,12 @@ Connected playbooks: P05, P07, P08
 | 12.02 | two claim-notice windows plausibly apply | the shorter alerts; conservatism ratified |
 | 12.03 | a certain miss emerges | escalate immediately, quantified; early certainty is compliance |
 | 12.04 | a rule change is announced but not ratified into the table | alert with the delta; the table changes only by ratification |
+| 12.05 | carrier.status.change received | compliance clocks re-derived from the standing facts; conservatism rule - the earlier date wins |
+| 12.06 | carrier.incident.notice received | regulatory clocks armed where applicable (DOT, hazmat release, injury reporting) with lead-time alerts; the swarm arms clocks, humans make filings |
+| 12.07 | records.disclosure.package pending past lead-time | deadline.alert; a records-response clock is a clock like any other |
 
 ## Agent 13 - freight-records
-Connected playbooks: none (tuple-layer only)
+Connected playbooks: P11, P12, P14
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -148,9 +168,11 @@ Connected playbooks: none (tuple-layer only)
 | 13.02 | a request would cross the rate/margin custody line | refuse with the scope named |
 | 13.03 | retention conflicts with an open claim or dispute | the hold wins; escalate |
 | 13.04 | storage write unconfirmed | not done until re-verified; unconfirmed is reported failed |
+| 13.05 | external records request arrives (shipper audit, insurer, subpoena) | assemble the disclosure inventory - existence, type, date, source only - records.disclosure.package to human and 12; release is a human decision, itemized |
+| 13.06 | carrier.incident.notice received | logged verbatim with source and timestamp; the record is the incident's spine |
 
 ## Agent 14 - daily-operations
-Connected playbooks: P09, P10
+Connected playbooks: P09, P10, P12
 
 | # | Crossing | Predeliberated answer |
 |---|---|---|
@@ -158,5 +180,7 @@ Connected playbooks: P09, P10
 | 14.02 | EOD sweep finds an untouched morning item | miss named with its owner; the sweep never reassigns |
 | 14.03 | human unreachable at book time | publish to the queue and hold |
 | 14.04 | a dark-tracking exception spans the book boundary | it leads both books until resolved; exceptions never age into footnotes |
+| 14.05 | agent.status reports a wait past threshold | named in report.package with age and blocking party; the morning report carries every wait |
+| 14.06 | carrier.incident.notice received | ops visibility same turn; the daily book carries the incident and its open clocks until closed |
 
-Total tuples: 61. Swarm-wide tuples: SWARM.md. Coverage map: TASK_INVENTORY.md.
+Total tuples: 85. Swarm-wide tuples: SWARM.md. Coverage map: TASK_INVENTORY.md.
